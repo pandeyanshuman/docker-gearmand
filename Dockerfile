@@ -34,6 +34,8 @@ RUN buildDeps='gcc libc6-dev make g++ gperf libboost-dev libboost-program-option
 	&& rm -r /usr/src/gearmand
 #	&& apt-get purge -y --auto-remove $buildDeps
 
+RUN ln -s /usr/local/lib/libgearman.so.8 /usr/lib/libgearman.so.8
+
 RUN mkdir /data
 
 VOLUME /data
