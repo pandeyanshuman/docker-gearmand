@@ -1,0 +1,34 @@
+FROM debian:jessie
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		ca-certificates \
+		curl \
+	&& rm -rf /var/lib/apt/lists/*
+
+ENV GEARMAN_VERSION 1.1.12
+ENV GEARMAN_DOWNLOAD_URL https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz
+ENV GEARMAN_DOWNLOAD_MD5 99dd0be85b181eccf7fb1ca3c2a28a9f
+
+RUN buildDeps='gcc libc6-dev make g++ gperf libboost-dev libboost-program-options-dev libevent-dev uuid-dev libmysqlclient-dev' \
+	&& set -x \
+	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends \
+	&& rm -rf /var/lib/apt/lists/* \
+	&& mkdir -p /usr/src/gearmand \
+	&& curl -sSL "$GEARMAN_DOWNLOAD_URL" -o gearmand.tar.gz \
+	&& echo "$GEARMAN_DOWNLOAD_MD5 *gearmand.tar.gz" | md5sum -c - \
+	&& tar -xzf gearmand.tar.gz -C /usr/src/gearmand --strip-components=1 \
+	&& rm gearmand.tar.gz \
+  && cd /usr/src/gearmand \
+  && ./configure \
+	&& make \
+	&& make install \
+	&& rm -r /usr/src/gearmand \
+	&& apt-get purge -y --auto-remove $buildDeps
+
+RUN mkdir /data
+
+VOLUME /data
+WORKDIR /data
+
+EXPOSE 4730
+CMD [ "gearmand" ]
