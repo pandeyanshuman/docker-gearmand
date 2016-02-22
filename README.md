@@ -4,7 +4,7 @@ This repository contains **Dockerfile** of [Gearman Job Server](http://gearman.o
 
 # Installation
 * Install [Docker](https://www.docker.com/)
-* Build `docker build -t="pandeyanshuman/docker-gearmand" github.com/pandeyanshuman/docker-gearmand`
+* Build `docker build -t=gearmand github.com/pandeyanshuman/docker-gearmand`
  
 # Usage
 ``
