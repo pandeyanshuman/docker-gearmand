@@ -8,5 +8,5 @@ This repository contains **Dockerfile** of [Gearman Job Server](http://gearman.o
  
 # Usage
 ``
-docker run --rm -it pandeyanshuman/docker-gearmand
+docker run --rm -it gearmand
 ``
