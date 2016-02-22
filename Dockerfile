@@ -5,6 +5,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		curl \
 	&& rm -rf /var/lib/apt/lists/*
 
+# grab gosu for easy step-down from root
+#RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
+#RUN curl -o /usr/local/bin/gosu -fSL "https://github.com/tianon/gosu/releases/download/1.7/gosu-$(dpkg --print-architecture)" \
+#	&& curl -o /usr/local/bin/gosu.asc -fSL "https://github.com/tianon/gosu/releases/download/1.7/gosu-$(dpkg --print-architecture).asc" \
+#	&& gpg --verify /usr/local/bin/gosu.asc \
+#	&& rm /usr/local/bin/gosu.asc \
+#	&& chmod +x /usr/local/bin/gosu
+
 ENV GEARMAN_VERSION 1.1.12
 ENV GEARMAN_DOWNLOAD_URL https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz
 ENV GEARMAN_DOWNLOAD_MD5 99dd0be85b181eccf7fb1ca3c2a28a9f
@@ -22,8 +30,9 @@ RUN buildDeps='gcc libc6-dev make g++ gperf libboost-dev libboost-program-option
   && ./configure \
 	&& make \
 	&& make install \
-	&& rm -r /usr/src/gearmand \
-	&& apt-get purge -y --auto-remove $buildDeps
+  && cd / \
+	&& rm -r /usr/src/gearmand
+#	&& apt-get purge -y --auto-remove $buildDeps
 
 RUN mkdir /data
 
@@ -31,4 +40,4 @@ VOLUME /data
 WORKDIR /data
 
 EXPOSE 4730
-CMD [ "gearmand" ]
+CMD [ "gearmand", "--verbose=DEBUG" ]
