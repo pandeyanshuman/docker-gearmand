@@ -36,10 +36,5 @@ RUN buildDeps='gcc libc6-dev make g++ gperf libboost-dev libboost-program-option
 
 RUN ln -s /usr/local/lib/libgearman.so.8 /usr/lib/libgearman.so.8
 
-RUN mkdir /data
-
-VOLUME /data
-WORKDIR /data
-
 EXPOSE 4730
-CMD [ "gearmand", "--verbose=DEBUG" ]
+CMD [ "gearmand" ]
