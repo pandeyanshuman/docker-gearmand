@@ -19,9 +19,9 @@ docker run --rm -it gearmand gearmand --verbose=DEBUG
 ``
 docker run --name=gearmand1 -P -d gearmand
 ``
-* Run the gearman client
+* Run the gearman client (job server is linked and is available at hostname gearmand1)
  
 
 ``
-docker run --rm -it gearmand gearman
+docker run --rm -it --link=gearmand1:gearmand1 gearmand gearman
 ``
